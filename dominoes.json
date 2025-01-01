@@ -1,0 +1,65 @@
+{
+  "starting_value": 8,
+  "dominoes": [
+    {
+      "left": 9,
+      "right": 9
+    },
+    {
+      "left": 0,
+      "right": 9
+    },
+    {
+      "left": 5,
+      "right": 9
+    },
+    {
+      "left": 2,
+      "right": 8
+    },
+    {
+      "left": 0,
+      "right": 7
+    },
+    {
+      "left": 2,
+      "right": 10
+    },
+    {
+      "left": 6,
+      "right": 11
+    },
+    {
+      "left": 1,
+      "right": 5
+    },
+    {
+      "left": 1,
+      "right": 4
+    },
+    {
+      "left": 5,
+      "right": 11
+    },
+    {
+      "left": 8,
+      "right": 9
+    },
+    {
+      "left": 5,
+      "right": 10
+    },
+    {
+      "left": 4,
+      "right": 5
+    },
+    {
+      "left": 2,
+      "right": 7
+    },
+    {
+      "left": 1,
+      "right": 12
+    }
+  ]
+}
