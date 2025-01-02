@@ -24,4 +24,10 @@ class Domino:
 
     def matches(self, other_domino):
       return self.left in (other_domino.left, other_domino.right) or self.right in (other_domino.left, other_domino.right)
+    
+    def flip(self):
+      left = self.left
+      self.left = self.right
+      self.right = left
+      return self
   
