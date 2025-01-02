@@ -18,7 +18,7 @@ def main():
     
   best_train = find_best_train(start_value, dominoes)
   
-  print(f"Best Mexican Train for start value {start_value} ({len(best_train)}/16 dominoes):")
+  print(f"Best Mexican Train for start value {start_value}:")
   print_train(best_train)
   
 def load_dominoes(file_path: str) -> List[Domino]:
@@ -44,16 +44,15 @@ def find_best_train(start_value: int, dominoes: List[Domino]) -> List[Domino]:
     current_score = len(current_train)
     
     if current_score > best_score:
-      best_train = current_train[:]
-      best_score = current_score
+      best_train, best_score = current_train[:], current_score
     
-    for i, domino in enumerate(remaining_dominoes):
+    for idx, domino in enumerate(remaining_dominoes):
       if open_end in (domino.left, domino.right):
         next_open_end = domino.right if domino.left == open_end else domino.left
         backtrack(
-          current_train + [domino], 
-          next_open_end,
-          remaining_dominoes[:i] + remaining_dominoes[i + 1:]
+          current_train=current_train + [domino], 
+          open_end=next_open_end,
+          remaining_dominoes=remaining_dominoes[:idx] + remaining_dominoes[idx + 1:]
         )
   
   backtrack([], start_value, dominoes)
@@ -80,7 +79,7 @@ def print_train(train):
         return
     
     train_str = " -> ".join(str(domino) for domino in train)
-    print(f"{train_str}")
+    print(f"{train_str}", f"({len(train)}/16 dominoes)")
 
 if __name__ == '__main__':
   main()
