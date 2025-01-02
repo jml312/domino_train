@@ -6,39 +6,37 @@ from typing import Tuple, List
 def main():
   parser = argparse.ArgumentParser(description="Process a JSON file to calculate the best Mexican Train.")
   parser.add_argument('--source', type=str, help="Path to the JSON file containing domino values.")
+  parser.add_argument('--start_value', type=int, help="Start value for the Mexican Train.")
   args = parser.parse_args()
   
   try:
-    starting_value, dominoes = load_dominoes(args.source)
+    start_value = args.start_value
+    dominoes = load_dominoes(args.source)
   except ValueError as e:
     print(e)
     return
     
-  best_train = find_best_train(starting_value, dominoes)
+  best_train = find_best_train(start_value, dominoes)
   
-  print(f"Best Mexican Train starting with {starting_value}:")
+  print(f"Best Mexican Train for start value {start_value} ({len(best_train)}/16 dominoes):")
   print_train(best_train)
   
-def load_dominoes(file_path: str) -> Tuple[str, List[Domino]]:
+def load_dominoes(file_path: str) -> List[Domino]:
   try:
     with open(file_path, 'r') as file:
       data = json.load(file)
-      starting_value = data['starting_value']
       dominoes = [Domino(d["left"], d["right"]) for d in data["dominoes"]]
-      
-      if starting_value < 0 or starting_value > 12:
-        raise ValueError("Starting value must be between 0 and 12")
       
       if len(dominoes) != 16:
         raise ValueError("There should be 16 dominoes")
       
-      return starting_value, dominoes
+      return dominoes
   except (json.JSONDecodeError, KeyError) as e:
     raise ValueError(f"Invalid JSON format: {e}")
   except FileNotFoundError:
     raise ValueError(f"File not found: {file_path}")
 
-def find_best_train(starting_value: int, dominoes: List[Domino]) -> List[Domino]:
+def find_best_train(start_value: int, dominoes: List[Domino]) -> List[Domino]:
   best_train, best_score = [], 0
   
   def backtrack(current_train, open_end, remaining_dominoes):
@@ -58,15 +56,15 @@ def find_best_train(starting_value: int, dominoes: List[Domino]) -> List[Domino]
           remaining_dominoes[:i] + remaining_dominoes[i + 1:]
         )
   
-  backtrack([], starting_value, dominoes)
-  return flip_dominoes_in_train(starting_value, best_train)
+  backtrack([], start_value, dominoes)
+  return flip_dominoes_in_train(start_value, best_train)
 
-def flip_dominoes_in_train(starting_value: int, train: List[Domino]) -> List[Domino]:
+def flip_dominoes_in_train(start_value: int, train: List[Domino]) -> List[Domino]:
   if not train: 
     return train
 
   flipped_train = []
-  prev = starting_value
+  prev = start_value
 
   for domino in train:
     if domino.left != prev:
